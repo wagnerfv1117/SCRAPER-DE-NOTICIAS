@@ -1,10 +1,10 @@
-import requests
-import lxml.html as html
-import os
-import datetime
+import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
+import lxml.html as html # lbrería que proporciona funciones para analizar y manipular paginas HTML
+import os # librería que permite trabajar de una forma cómoda con el sistema operativo
+import datetime # librería que permite obtener la fecha actual
 
 
-HOME_URL = 'https://www.larepublica.co/'
+HOME_URL = 'https://www.larepublica.co/' # web de donde se van a extraer los datos de titulos y curpo de noticias
 
 
 XPATH_LINK_TO_ARTICLE = '//text-fill[not(@class)]/a/@href'
