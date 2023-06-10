@@ -6,19 +6,20 @@ import datetime # librería que permite obtener la fecha actual
 
 HOME_URL = 'https://www.larepublica.co/' # web de donde se van a extraer los datos de titulos y curpo de noticias
 
-
+# Estas variables, almacenan los diferentes patrones de búsqueda en XPath que se utilizarán para extraer información específica de las noticias en el sitio web.
 XPATH_LINK_TO_ARTICLE = '//text-fill[not(@class)]/a/@href'
 XPATH_TITTLE = '//div[@class="mb-auto"]//span/text()'
 XPATH_SUMMARY = '//div[@class = "lead"]/p/text()'
 XPATH_BODY = '//div[@class = "html-content"]/p[not (@class)]/text()'
 
+#La siguiente función, se encarga de realizar el scraping de una noticia individual. Recibe como parámetros el enlace de la noticia y la fecha actual.
 def parse_notice(link,today):
     try:
         response=requests.get(link)
         if response.status_code==200:
             notice=response.content.decode('utf-8')
             parsed=html.fromstring(notice)
-            
+ #En las siguientes líneas se realiza una solicitud HTTP al enlace de la noticia y se comprueba si la respuesta tiene un código de estado 200, lo que indica que la solicitud fue exitosa. Luego, se obtiene el contenido de la respuesta y se decodifica como texto en formato UTF-8. A continuación, se utiliza lxml.html para analizar el contenido HTML y convertirlo en un objeto que se puede manipular.           
             try:
                 tittle=parsed.xpath(XPATH_TITTLE)[0]
                 print(tittle)
@@ -27,7 +28,7 @@ def parse_notice(link,today):
                 body=parsed.xpath(XPATH_BODY )
             except IndexError:
                 return
-
+# Estas líneas utilizan los patrones XPath definidos anteriormente para extraer el título, resumen y cuerpo de la noticia. El título se obtiene mediante parsed.xpath(XPATH_TITTLE)[0], el resumen se obtiene con parsed.xpath(XPATH_SUMMARY)[0] y el cuerpo se obtiene con parsed.xpath(XPATH_BODY). Además, se realiza una sustitución en el título para eliminar las comillas dobles.
             with open(f'{today}/{tittle}.txt','w',encoding='utf-8') as f:
                 f.write(tittle)
                 f.write('\n\n')
@@ -60,7 +61,7 @@ def parse_home():
             raise ValueError(f'Error: {response.status_code}')
     except ValueError as ve:
         print(ve)
-
+# En las siguientes lineas de código, se encarga de ejecutar la función parse_home() cuando el archivo se ejecuta directamente como un script.
 def run():
     parse_home()
 
