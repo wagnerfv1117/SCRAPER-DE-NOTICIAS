@@ -1,24 +1,26 @@
+#1era parte - Importar librerías
+
 import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
 import lxml.html as html # lbrería que proporciona funciones para analizar y manipular paginas HTML
 import os # librería que permite trabajar de una forma cómoda con el sistema operativo
 import datetime # librería que permite obtener la fecha actual
 
-
+#2da parte - Sitio web de donde se extraerá la información
 HOME_URL = 'https://www.larepublica.co/' # web de donde se van a extraer los datos de titulos y curpo de noticias
 
-# Estas variables, almacenan los diferentes patrones de búsqueda en XPath que se utilizarán para extraer información específica de las noticias en el sitio web.
-XPATH_LINK_TO_ARTICLE = '//text-fill[not(@class)]/a/@href'
-XPATH_TITTLE = '//div[@class="mb-auto"]//span/text()'
-XPATH_SUMMARY = '//div[@class = "lead"]/p/text()'
-XPATH_BODY = '//div[@class = "html-content"]/p[not (@class)]/text()'
+# Estas variables, almacenan los diferentes patrones de búsqueda en lenguaje XPath que se utilizarán para extraer información específica de las noticias en el sitio web.
+XPATH_LINK_TO_ARTICLE = '//text-fill[not(@class)]/a/@href'#Este fragmento extrae la parte donde se encuentra el enlace web de la noticia.
+XPATH_TITTLE = '//div[@class="mb-auto"]//span/text()'#Este fragmento extrae el el título de cada noticia
+XPATH_SUMMARY = '//div[@class = "lead"]/p/text()'#Este fragmento extrae el encabezado, subtitulo o idea principal de la noticia
+XPATH_BODY = '//div[@class = "html-content"]/p[not (@class)]/text()'#Este fragmento, extrae el cuerpo del texto de la noticia
 
 #La siguiente función, se encarga de realizar el scraping de una noticia individual. Recibe como parámetros el enlace de la noticia y la fecha actual.
-def parse_notice(link,today):
-    try:
-        response=requests.get(link)
-        if response.status_code==200:
-            notice=response.content.decode('utf-8')
-            parsed=html.fromstring(notice)
+def parse_notice(link,today): # Se crea una función para tomar del enlace y el día a extraer información
+    try: #Se crea un sentenciía que hará:
+        response=requests.get(link)#si la libreria request que extraerá la pagina web al enlace declarado en la variable HOME_URL
+        if response.status_code==200:#Condicional si (if) en caso de que la extracción sea arroje un estado de numero 200, procederá con codificar la extracción en formto UTF-8
+            notice=response.content.decode('utf-8')#Se declara una variable que codifique la pagina web en formato internacional UTF-8
+            parsed=html.fromstring(notice)#toma la cadena de texto notice y la pasa como argumento a la función fromstring de la biblioteca html. El resultado de esta operación es asignado a la variable parsed, es decir, organiza gramaticalmente el texto extraido de la pagina web
  #En las siguientes líneas se realiza una solicitud HTTP al enlace de la noticia y se comprueba si la respuesta tiene un código de estado 200, lo que indica que la solicitud fue exitosa. Luego, se obtiene el contenido de la respuesta y se decodifica como texto en formato UTF-8. A continuación, se utiliza lxml.html para analizar el contenido HTML y convertirlo en un objeto que se puede manipular.           
             try:
                 tittle=parsed.xpath(XPATH_TITTLE)[0]
@@ -42,7 +44,7 @@ def parse_notice(link,today):
             raise ValueError(f'Error: {response.status_code}')
     except ValueError as ve:
         print(ve)
-
+#3ra parte - Creación de carpet y archivos de texto con la información extraída 
 def parse_home():
     try:
         response= requests.get(HOME_URL)
