@@ -23,15 +23,15 @@ def parse_notice(link,today): # Se crea una función para tomar del enlace y el 
             parsed=html.fromstring(notice)#toma la cadena de texto notice y la pasa como argumento a la función fromstring de la biblioteca html. El resultado de esta operación es asignado a la variable parsed, es decir, organiza gramaticalmente el texto extraido de la pagina web
  #En las siguientes líneas se realiza una solicitud HTTP al enlace de la noticia y se comprueba si la respuesta tiene un código de estado 200, lo que indica que la solicitud fue exitosa. Luego, se obtiene el contenido de la respuesta y se decodifica como texto en formato UTF-8. A continuación, se utiliza lxml.html para analizar el contenido HTML y convertirlo en un objeto que se puede manipular.           
             try:
-                tittle=parsed.xpath(XPATH_TITTLE)[0]
-                print(tittle)
+                tittle=parsed.xpath(XPATH_TITTLE)[0]#Decodifica el titulo del sitio web, es decir, quita todo el codigo HTML y se extrae solamente el texto
+                print(tittle)#Se crea una variable para que se imprima el titulo de la noticia en un archivo de texto plano
                 tittle=tittle.replace('\"','')
-                summary=parsed.xpath(XPATH_SUMMARY)[0]
-                body=parsed.xpath(XPATH_BODY )
-            except IndexError:
+                summary=parsed.xpath(XPATH_SUMMARY)[0] #Se crea una variable para que se imprima el subtitulo o idea principal de la noticia en un archivo de texto plano
+                body=parsed.xpath(XPATH_BODY ) # Se crea una variable para que se imprima el cuerpo  de la noticia en un archivo de texto plano
+            except IndexError:# se crea un condicional que en caso de que no ocurra ningun error den la ejecución retorne
                 return
 # Estas líneas utilizan los patrones XPath definidos anteriormente para extraer el título, resumen y cuerpo de la noticia. El título se obtiene mediante parsed.xpath(XPATH_TITTLE)[0], el resumen se obtiene con parsed.xpath(XPATH_SUMMARY)[0] y el cuerpo se obtiene con parsed.xpath(XPATH_BODY). Además, se realiza una sustitución en el título para eliminar las comillas dobles.
-            with open(f'{today}/{tittle}.txt','w',encoding='utf-8') as f:
+            with open(f'{today}/{tittle}.txt','w',encoding='utf-8') as f:#codificación de los archivos en formato .txt, el cual es escalable para leer en cualquier sistema
                 f.write(tittle)
                 f.write('\n\n')
                 f.write(summary)
