@@ -1,6 +1,9 @@
 ############################################################################################
 #SCRAPER DE NOTICIAS CON PYTHON / NEWSCRAPER WITH PYTHON
 ############################################################################################
+# Scraper o raspador para extraer información de noticias de la web, para el ejemplo, se usa
+#la librería de request y el lenguaje python.
+#############################################################################################
 #1era parte - Importar librerías
 
 import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
