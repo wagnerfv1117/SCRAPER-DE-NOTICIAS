@@ -1,3 +1,6 @@
+############################################################################################
+#SCRAPER DE NOTICIAS CON PYTHON / NEWSCRAPER WITH PYTHON
+############################################################################################
 #1era parte - Importar librerías
 
 import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
@@ -32,13 +35,13 @@ def parse_notice(link,today): # Se crea una función para tomar del enlace y el 
                 return
 # Estas líneas utilizan los patrones XPath definidos anteriormente para extraer el título, resumen y cuerpo de la noticia. El título se obtiene mediante parsed.xpath(XPATH_TITTLE)[0], el resumen se obtiene con parsed.xpath(XPATH_SUMMARY)[0] y el cuerpo se obtiene con parsed.xpath(XPATH_BODY). Además, se realiza una sustitución en el título para eliminar las comillas dobles.
             with open(f'{today}/{tittle}.txt','w',encoding='utf-8') as f:#codificación de los archivos en formato .txt, el cual es escalable para leer en cualquier sistema
-                f.write(tittle)
-                f.write('\n\n')
-                f.write(summary)
-                f.write('\n\n')
-                for p in body:
-                    f.write(p)
-                    f.write('\n')
+                f.write(tittle)# Se da la instrucción para que se guarde en local el archivo .txt con su respectivo nombre  
+                f.write('\n\n') #instancia por la cual se guarda el archivo de texto extraído en la respectiva unidad de disco
+                f.write(summary) #se utiliza para escribir el contenido de una variable en un archivo abierto en modo escritura. 
+                f.write('\n\n') #instancia por la cual se guarda el archivo de texto extraído en la respectiva unidad de disco de forma repetitiva, solicitud hecha al cluster de disco
+                for p in body: #pasos o instrucciones para almacenar el cuerpo del texto del texto extraído al archivo .txt
+                    f.write(p)# se formaliza la creación y almacenamiento del archivo de texto en la unidad de disco creando la instancia write 
+                    f.write('\n')# instancia para guardarlo en una ubicación donde se aloje el proyecto.
 
         else:
             raise ValueError(f'Error: {response.status_code}')
