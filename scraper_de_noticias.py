@@ -9,6 +9,7 @@
 import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
 import lxml.html as html # lbrería que proporciona funciones para analizar y manipular paginas HTML
 import os # librería que permite trabajar de una forma cómoda con el sistema operativo
+import sys
 import datetime # librería que permite obtener la fecha actual
 
 #2da parte - Sitio web de donde se extraerá la información
@@ -46,25 +47,26 @@ def parse_notice(link,today): # Se crea una función para tomar del enlace y el 
                     f.write(p)# se formaliza la creación y almacenamiento del archivo de texto en la unidad de disco creando la instancia write 
                     f.write('\n')# instancia para guardarlo en una ubicación donde se aloje el proyecto.
 
-        else:
-            raise ValueError(f'Error: {response.status_code}')
+        else:# Un condicional, si en caso de que la información extraída de la pagina no sea exitosa o arroje el codigo 200 entonces:
+            raise ValueError(f'Error: {response.status_code}')#Se ejecuta el error, en que no es exitosa la extracción de la data 
     except ValueError as ve:
-        print(ve)
+        print(ve)# Impresion del error
+
 #3ra parte - Creación de carpet y archivos de texto con la información extraída 
-def parse_home():
+def parse_home():# Se define una variable para que se tomen los datos extraídos, se codifiquen y se guarden en archivo.
     try:
-        response= requests.get(HOME_URL)
-        if response.status_code==200:
-            home=response.content.decode('utf-8')
-            parsed=html.fromstring(home)
-            links_to_notices=parsed.xpath(XPATH_LINK_TO_ARTICLE)
+        response= requests.get(HOME_URL)# variable en la cual almacena la url a extraer información
+        if response.status_code==200:# si arroja codigo 200
+            home=response.content.decode('utf-8')# guarda el archivo en formato .txt con codificación utf-8
+            parsed=html.fromstring(home)# toma la estructura HTML y la convierte a formato text 
+            links_to_notices=parsed.xpath(XPATH_LINK_TO_ARTICLE)# estructura codigo XPATH en el cual están almacenados los datos en el sitio web
             
-            today=datetime.date.today().strftime('%d-%m-%Y')
-            if not os.path.isdir(today):
-                os.mkdir(today)
+            today=datetime.date.today().strftime('%d-%m-%Y')# Se agrega una etiqueta de dia/mes/año
+            if not os.path.isdir(today):# el condicional es que se guarde la carpeta con los archivos por día
+                os.mkdir(today)# comando condicional para crear la carpeta en la cual se almacenarán los archivos de las secciones del periódico
             
-            for link in links_to_notices:
-                parse_notice(link,today)
+            for link in links_to_notices:# este fragmento establece un bucle "for" o para en español que recorre los elementos de la secuencia links_to_notices, y en cada iteración, la variable link toma el valor del elemento actual. Dentro del bloque de código del bucle, se pueden realizar operaciones o acciones utilizando el valor de link en cada iteración.
+                parse_notice(link,today)# codifica a formato texto plano los enlaces de donde se extrae la notica
         else:
             raise ValueError(f'Error: {response.status_code}')
     except ValueError as ve:
