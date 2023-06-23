@@ -9,7 +9,7 @@
 import requests # librería que coadyuva en  hacer solicitudes HTTP a la página web
 import lxml.html as html # lbrería que proporciona funciones para analizar y manipular paginas HTML
 import os # librería que permite trabajar de una forma cómoda con el sistema operativo
-import sys
+import sys # esta librería permite gestionar funcionalidades en el sistema operativo donde se ejecute éste código
 import datetime # librería que permite obtener la fecha actual
 
 #2da parte - Sitio web de donde se extraerá la información
@@ -68,12 +68,12 @@ def parse_home():# Se define una variable para que se tomen los datos extraídos
             for link in links_to_notices:# este fragmento establece un bucle "for" o para en español que recorre los elementos de la secuencia links_to_notices, y en cada iteración, la variable link toma el valor del elemento actual. Dentro del bloque de código del bucle, se pueden realizar operaciones o acciones utilizando el valor de link en cada iteración.
                 parse_notice(link,today)# codifica a formato texto plano los enlaces de donde se extrae la notica
         else:
-            raise ValueError(f'Error: {response.status_code}')
+            raise ValueError(f'Error: {response.status_code}')# muestra el error en caso de que no se ejecute bien la instrucción anterior
     except ValueError as ve:
-        print(ve)
+        print(ve)# impresión del error
 # En las siguientes lineas de código, se encarga de ejecutar la función parse_home() cuando el archivo se ejecuta directamente como un script.
-def run():
-    parse_home()
+def run():# se difne una función para que arranque el codigo escrito en python
+    parse_home()#hace una exploración en el código html de la pagina web que se le va hacer scraping
 
-if __name__=='__main__':
-    run()
+if __name__=='__main__':# se crea un condicional, para que se ejecute exitosamente la aplicación en el host o computadora
+    run()#en caso de que cumpla el condicional con el parsmetro anterior, se procede con ejecutar todas las lineas de código anteriores
